@@ -10,6 +10,9 @@ public class ServerLogin : MonoBehaviour
     public TMP_InputField serverIDInputField;
     public TMP_InputField passwordInputField;
 
+    public GameObject playerLogin;
+    public GameObject serverLogin;
+
     public void Login()
     {
         string serverID = serverIDInputField.text; // Retrieve the server ID value from the InputField
