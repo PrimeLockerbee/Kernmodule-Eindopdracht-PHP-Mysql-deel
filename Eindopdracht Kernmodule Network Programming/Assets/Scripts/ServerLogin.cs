@@ -6,34 +6,28 @@ using TMPro;
 
 public class ServerLogin : MonoBehaviour
 {
-    public string serverLoginURL = "https://studentdav.hku.nl/webdav/public_html/server_login.php";
-    public TMP_InputField emailInputField;
+    public string serverLoginURL = "https://studenthome.hku.nl/~bradley.vanewijk/server_login.php";
+    public TMP_InputField serverIDInputField;
     public TMP_InputField passwordInputField;
 
     public void Login()
     {
-        string email = emailInputField.text; // Retrieve the email value from the InputField
+        string serverID = serverIDInputField.text; // Retrieve the server ID value from the InputField
         string password = passwordInputField.text; // Retrieve the password value from the InputField
 
-        StartCoroutine(ServerLoginRequest(email, password));
+        StartCoroutine(ServerLoginRequest(serverID, password));
     }
 
-    private IEnumerator ServerLoginRequest(string email, string password)
+    private IEnumerator ServerLoginRequest(string serverID, string password)
     {
         // Create a form to hold the login data
         WWWForm form = new WWWForm();
-        form.AddField("email", email);
+        form.AddField("server_id", serverID);
         form.AddField("password", password);
 
         // Send the POST request to the server login script
         using (UnityWebRequest www = UnityWebRequest.Post(serverLoginURL, form))
         {
-            // Add the authorization header
-            string usernameserver = "bradley.vanewijk@student.hku.nl";
-            string passwordserver = "QuantumWardutch1997!#@";
-            string credentials = System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(usernameserver + ":" + passwordserver));
-            www.SetRequestHeader("Authorization", "Basic " + credentials);
-
             yield return www.SendWebRequest();
 
             // Check for errors during the request
@@ -43,19 +37,26 @@ public class ServerLogin : MonoBehaviour
             }
             else
             {
-                // Print the response from the server
-                Debug.Log("Server response: " + www.downloadHandler.text);
+                // Get the response headers
+                Dictionary<string, string> headers = www.GetResponseHeaders();
 
-                // Check the response from the server
-                if (www.downloadHandler.text.Contains("Server login successful"))
+                // Check if the 'Session-ID' header exists
+                if (headers.ContainsKey("Session-ID"))
                 {
-                    Debug.Log("Server login successful");
+                    // Retrieve the session ID from the response headers
+                    string sessionId = headers["Session-ID"];
+
+                    Debug.Log("Session ID: " + sessionId);
+
                     // Perform any actions required upon successful server login
+                }
+                else if (www.downloadHandler.text == "0")
+                {
+                    Debug.Log("Server login failed: Invalid server ID or password");
                 }
                 else
                 {
-                    Debug.Log("Server login failed");
-                    // Perform any actions required upon failed server login
+                    Debug.Log("Server login failed: No matching server ID");
                 }
             }
         }
