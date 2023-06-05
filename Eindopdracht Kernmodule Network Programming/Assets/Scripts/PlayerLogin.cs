@@ -10,12 +10,21 @@ public class PlayerLogin : MonoBehaviour
     public TMP_InputField emailInputField;
     public TMP_InputField passwordInputField;
 
+    public ServerLogin serverlogin;
+
     public void Login()
     {
-        string email = emailInputField.text; // Retrieve the email value from the InputField
-        string password = passwordInputField.text; // Retrieve the password value from the InputField
+        if (serverlogin.serverLoggedIn)
+        {
+            string email = emailInputField.text; // Retrieve the email value from the InputField
+            string password = passwordInputField.text; // Retrieve the password value from the InputField
 
-        StartCoroutine(PlayerLoginRequest(email, password));
+            StartCoroutine(PlayerLoginRequest(email, password));
+        }
+        else
+        {
+            Debug.Log("Server not logged in");
+        }
     }
 
     private IEnumerator PlayerLoginRequest(string email, string password)
@@ -33,20 +42,17 @@ public class PlayerLogin : MonoBehaviour
             // Check for errors during the request
             if (www.isNetworkError || www.isHttpError)
             {
-                Debug.LogError("Login request failed. Error: " + www.error);
+                Debug.LogError("Player login request failed. Error: " + www.error);
             }
             else
             {
                 // Get the response from the server
                 string response = www.downloadHandler.text;
 
-                // Debug the response
-                //Debug.Log("Server Response: " + response);
-
                 // Check if the response contains the username
                 if (!string.IsNullOrEmpty(response) && !response.StartsWith("Invalid"))
                 {
-                    Debug.Log("Player Login succesfull");
+                    Debug.Log("Player Login successful");
 
                     // Debug the username
                     Debug.Log("Username + id: " + response);

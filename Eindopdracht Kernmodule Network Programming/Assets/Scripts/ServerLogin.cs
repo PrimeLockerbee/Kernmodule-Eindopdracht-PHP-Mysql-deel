@@ -10,8 +10,9 @@ public class ServerLogin : MonoBehaviour
     public TMP_InputField serverIDInputField;
     public TMP_InputField passwordInputField;
 
-    public GameObject playerLogin;
-    public GameObject serverLogin;
+    public PlayerLogin playerlogin;
+
+    public bool serverLoggedIn = false;
 
     public void Login()
     {
@@ -52,6 +53,7 @@ public class ServerLogin : MonoBehaviour
                     Debug.Log("Session ID: " + sessionId);
 
                     // Perform any actions required upon successful server login
+                    serverLoggedIn = true;
                 }
                 else if (www.downloadHandler.text == "0")
                 {
