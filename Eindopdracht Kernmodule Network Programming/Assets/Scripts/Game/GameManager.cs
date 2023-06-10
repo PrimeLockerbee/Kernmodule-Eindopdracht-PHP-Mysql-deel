@@ -22,24 +22,24 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        string nickname = PlayerPrefs.GetString("Nickname");
+        //string nickname = PlayerPrefs.GetString("Nickname");
 
-        nicknameText.text = nickname;
+        //nicknameText.text = nickname;
 
-        // Check if the current player is already set
-        if (!PlayerPrefs.HasKey("CurrentPlayer"))
-        {
-            // If not set, assign the first player who logs in as player 1
-            PlayerPrefs.SetInt("CurrentPlayer", 1);
-        }
+        //// Check if the current player is already set
+        //if (!PlayerPrefs.HasKey("CurrentPlayer"))
+        //{
+        //    // If not set, assign the first player who logs in as player 1
+        //    PlayerPrefs.SetInt("CurrentPlayer", 1);
+        //}
 
-        // Retrieve the current player from PlayerPrefs
-        currentPlayer = PlayerPrefs.GetInt("CurrentPlayer");
+        //// Retrieve the current player from PlayerPrefs
+        //currentPlayer = PlayerPrefs.GetInt("CurrentPlayer");
 
-        // Set the color of the nickname text based on the current player with alpha value set to 255
-        nicknameText.color = (currentPlayer == 1)
-            ? new Color(player1Color.r, player1Color.g, player1Color.b, 1f)
-            : new Color(player2Color.r, player2Color.g, player2Color.b, 1f);
+        //// Set the color of the nickname text based on the current player with alpha value set to 255
+        //nicknameText.color = (currentPlayer == 1)
+        //    ? new Color(player1Color.r, player1Color.g, player1Color.b, 1f)
+        //    : new Color(player2Color.r, player2Color.g, player2Color.b, 1f);
 
         currentPlayer = 1; // Player 1 starts
         gameBoard = new int[3, 3];
