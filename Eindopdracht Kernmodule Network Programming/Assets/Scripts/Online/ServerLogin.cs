@@ -10,14 +10,21 @@ public class ServerLogin : MonoBehaviour
     public TMP_InputField serverIDInputField;
     public TMP_InputField passwordInputField;
 
+    public TextMeshProUGUI serverStatus;
+
     public PlayerLogin playerlogin;
 
     public bool serverLoggedIn = false;
 
+    private void Start()
+    {
+        Login();
+    }
+
     public void Login()
     {
-        string serverID = serverIDInputField.text; // Retrieve the server ID value from the InputField
-        string password = passwordInputField.text; // Retrieve the password value from the InputField
+        string serverID = "1"; // Retrieve the server ID value from the InputField
+        string password = "qwerty123"; // Retrieve the password value from the InputField
 
         StartCoroutine(ServerLoginRequest(serverID, password));
     }
@@ -54,6 +61,8 @@ public class ServerLogin : MonoBehaviour
 
                     // Perform any actions required upon successful server login
                     serverLoggedIn = true;
+
+                    serverStatus.text = "Online";
                 }
                 else if (www.downloadHandler.text == "0")
                 {

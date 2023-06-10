@@ -7,17 +7,15 @@ using TMPro;
 public class ScoreSubmission : MonoBehaviour
 {
     public string scoreSubmitURL = "https://studenthome.hku.nl/~bradley.vanewijk/score_submit.php";
-    public TMP_InputField playerNameInput;
-    public TMP_InputField scoreInput;
 
     public ServerLogin serverLogin;
 
-    public void SubmitScore()
+    public void SubmitScore(string playername, int playerscore)
     {
         if (serverLogin.serverLoggedIn)
         {
-            string playerName = playerNameInput.text;
-            int score = int.Parse(scoreInput.text);
+            string playerName = playername;
+            int score = playerscore;
 
             StartCoroutine(SendScore(playerName, score));
         }
