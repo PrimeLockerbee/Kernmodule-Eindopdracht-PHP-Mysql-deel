@@ -13,37 +13,18 @@ public class GameManager : MonoBehaviour
     public Color player1Color = Color.red;
     public Color player2Color = Color.blue;
 
-    private int currentPlayer;
+    public int currentPlayer;
     private int[,] gameBoard;
     private bool isGameOver;
 
     public TextMeshProUGUI nicknameText;
-    public TextMeshProUGUI currentPlayerNumber;
 
     private void Start()
     {
-        //string nickname = PlayerPrefs.GetString("Nickname");
-
-        //nicknameText.text = nickname;
-
-        //// Check if the current player is already set
-        //if (!PlayerPrefs.HasKey("CurrentPlayer"))
-        //{
-        //    // If not set, assign the first player who logs in as player 1
-        //    PlayerPrefs.SetInt("CurrentPlayer", 1);
-        //}
-
-        //// Retrieve the current player from PlayerPrefs
-        //currentPlayer = PlayerPrefs.GetInt("CurrentPlayer");
-
-        //// Set the color of the nickname text based on the current player with alpha value set to 255
-        //nicknameText.color = (currentPlayer == 1)
-        //    ? new Color(player1Color.r, player1Color.g, player1Color.b, 1f)
-        //    : new Color(player2Color.r, player2Color.g, player2Color.b, 1f);
-
         currentPlayer = 1; // Player 1 starts
         gameBoard = new int[3, 3];
         isGameOver = false;
+
 
         // Update the text components of each cell with their respective indices
         for (int row = 0; row < 3; row++)
