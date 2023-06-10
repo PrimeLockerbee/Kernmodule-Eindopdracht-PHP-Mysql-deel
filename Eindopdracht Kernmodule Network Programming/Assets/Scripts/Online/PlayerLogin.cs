@@ -76,7 +76,6 @@ public class PlayerLogin : MonoBehaviour
                          PlayerPrefs.SetString("ID", id);
                          PlayerPrefs.SetString("Nickname", nickname);
                          PlayerPrefs.SetString("SessionID", sessionId);
-                         PlayerPrefs.SetInt("NumPlayers", numPlayers);
 
                          // Now you can use the variables as needed
                          Debug.Log("ID: " + id);

@@ -7,8 +7,6 @@ using TMPro;
 public class ServerLogin : MonoBehaviour
 {
     public string serverLoginURL = "https://studenthome.hku.nl/~bradley.vanewijk/server_login.php";
-    public TMP_InputField serverIDInputField;
-    public TMP_InputField passwordInputField;
 
     public TextMeshProUGUI serverStatus;
 
@@ -25,6 +23,8 @@ public class ServerLogin : MonoBehaviour
     {
         string serverID = "1"; // Retrieve the server ID value from the InputField
         string password = "qwerty123"; // Retrieve the password value from the InputField
+
+        Debug.Log("Server 1 started.");
 
         StartCoroutine(ServerLoginRequest(serverID, password));
     }

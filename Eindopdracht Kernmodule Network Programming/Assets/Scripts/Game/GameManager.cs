@@ -17,11 +17,16 @@ public class GameManager : MonoBehaviour
     private int[,] gameBoard;
     private bool isGameOver;
 
-    public TextMeshProUGUI nicknameText;
+    private Server server;
 
-    private void Start()
+    public void SetServer(Server server)
     {
-        currentPlayer = 1; // Player 1 starts
+        this.server = server;
+    }
+
+    public void StartGame(int currentPlayer)
+    {
+        this.currentPlayer = currentPlayer;
         gameBoard = new int[3, 3];
         isGameOver = false;
 
@@ -70,11 +75,6 @@ public class GameManager : MonoBehaviour
         UpdateCurrentPlayerText();
     }
 
-    private void Update()
-    {
-        
-    }
-
     public void MakeMove(int cellIndex)
     {
         if (isGameOver)
@@ -109,9 +109,13 @@ public class GameManager : MonoBehaviour
             SwitchPlayer();
             UpdateCurrentPlayerText();
         }
+
+        // Send move information to all clients
+        string moveData = "MOVE:" + cellIndex;
+        server.BroadcastMessageToClients(moveData);
     }
 
-    private void UpdateCellVisual(int index)
+    public void UpdateCellVisual(int index)
     {
         string cellName = "Cell_" + (index + 1);
         GameObject cellObject = GameObject.Find(cellName);
@@ -144,12 +148,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SwitchPlayer()
+    public void SwitchPlayer()
     {
         currentPlayer = (currentPlayer == 1) ? 2 : 1;
     }
 
-    private bool CheckWinCondition(int player)
+    public bool CheckWinCondition(int player)
     {
         // Check for horizontal win conditions
         if (gameBoard[0, 0] == player && gameBoard[0, 1] == player && gameBoard[0, 2] == player)
@@ -176,7 +180,7 @@ public class GameManager : MonoBehaviour
         return false; // Return true if a win condition is met
     }
 
-    private bool CheckDraw()
+    public bool CheckDraw()
     {
         for (int row = 0; row < 3; row++)
         {
@@ -190,7 +194,7 @@ public class GameManager : MonoBehaviour
         return true; // Return true if all cells are occupied (draw)
     }
 
-    private void HandleWin(int player)
+    public void HandleWin(int player)
     {
         isGameOver = true;
         gameResultText.text = "Player " + player + " wins!";
@@ -199,15 +203,21 @@ public class GameManager : MonoBehaviour
         gameResultText.color = (player == 1)
             ? new Color(player1Color.r, player1Color.g, player1Color.b, 255f / 255f)
             : new Color(player2Color.r, player2Color.g, player2Color.b, 255f / 255f);
+
+        // Broadcast win message to clients
+        server.BroadcastMessageToClients("WIN:" + player);
     }
 
-    private void HandleDraw()
+    public void HandleDraw()
     {
         isGameOver = true;
         gameResultText.text = "It's a draw!";
+
+        // Broadcast draw message to clients
+        server.BroadcastMessageToClients("DRAW");
     }
 
-    private void UpdateCurrentPlayerText()
+    public void UpdateCurrentPlayerText()
     {
         currentPlayerText.text = "Current Player: " + currentPlayer;
 

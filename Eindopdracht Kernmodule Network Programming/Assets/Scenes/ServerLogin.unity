@@ -553,6 +553,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3146008319493794666, guid: d7960ad86bedc0b4495bea64ab1cea6b, type: 3}
+      propertyPath: client
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3146008319493794666, guid: d7960ad86bedc0b4495bea64ab1cea6b, type: 3}
       propertyPath: serverlogin
       value: 
       objectReference: {fileID: 15629952}
