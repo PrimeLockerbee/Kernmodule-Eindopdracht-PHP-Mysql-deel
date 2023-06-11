@@ -20,8 +20,9 @@ public class Server : MonoBehaviour
 
     private int connectedClients;
 
+    HashSet<int> assignedPlayerNumbers = new HashSet<int>(); // Keep track of assigned player numbers
 
-    private void Start()
+    public void StartEpic()
     {
         startGame = FindObjectOfType<GameManager>();
         if (startGame != null)
@@ -71,9 +72,11 @@ public class Server : MonoBehaviour
                     // Assign player numbers to clients
                     for (int i = 0; i < MaxClients; i++)
                     {
-                        SendMessageToClient(i, "PLAYER_NUMBER:" + (i + 1));
+                        int playerNumber = GetUniquePlayerNumber(); // Get a unique player number
+                        SendMessageToClient(i, "PLAYER_NUMBER:" + playerNumber);
                         BroadcastMessageToClients("THIS WORKS");
                     }
+
 
                     // Start the game here or notify the GameManager to start the game
                     startGame.StartGame(clientIndex + 1);
@@ -147,5 +150,19 @@ public class Server : MonoBehaviour
                 SendMessageToClient(i, message);
             }
         }
+    }
+
+    private int GetUniquePlayerNumber()
+    {
+        int playerNumber = UnityEngine.Random.Range(1, MaxClients + 1); // Generate a random player number
+
+        // Check if the player number is already assigned, generate a new one until unique
+        while (assignedPlayerNumbers.Contains(playerNumber))
+        {
+            playerNumber = UnityEngine.Random.Range(1, MaxClients + 1);
+        }
+
+        assignedPlayerNumbers.Add(playerNumber); // Add the player number to the set of assigned numbers
+        return playerNumber;
     }
 }

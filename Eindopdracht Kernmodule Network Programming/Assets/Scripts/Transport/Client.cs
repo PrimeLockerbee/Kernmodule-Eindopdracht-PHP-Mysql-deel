@@ -15,18 +15,12 @@ public class Client : MonoBehaviour
 
     public GameManager gameManager; // Reference to the GameManager instance
 
-    private void Start()
-    {
-        ConnectToServer();
-    }
-
     public void ConnectToServer()
     {
         try
         {
             client = new TcpClient();
             client.BeginConnect(serverAddress, serverPort, ConnectCallback, null);
-            gameManager.UpdateCurrentPlayerText();
         }
         catch (Exception e)
         {
@@ -90,9 +84,10 @@ public class Client : MonoBehaviour
         string[] messages = data.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
         foreach (string message in messages)
         {
+            Debug.Log("Received message: " + message);
+
             if (message.StartsWith("MOVE:"))
             {
-                gameManager.UpdateCurrentPlayerText();
                 // Extract the move index from the message
                 int moveIndex = int.Parse(message.Substring(5));
                 // Call the GameManager's MakeMove function with the received move index
