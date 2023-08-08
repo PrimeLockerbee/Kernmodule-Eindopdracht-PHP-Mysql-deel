@@ -8,8 +8,6 @@ public class UnityMainThreadDispatcher : MonoBehaviour
     private static UnityMainThreadDispatcher instance = null;
     private static readonly Queue<Action> actionQueue = new Queue<Action>();
 
-
-
     public static UnityMainThreadDispatcher Instance()
     {
         if (instance == null)

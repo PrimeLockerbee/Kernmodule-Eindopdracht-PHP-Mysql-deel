@@ -123,17 +123,6 @@ public class Client : MonoBehaviour
                     gameManager.UpdateCurrentPlayerText(); // Update the UI text
                 });
             }
-            //else if (message.StartsWith("PLAYERTURN:"))
-            //{
-            //    int currentPlayer = int.Parse(message.Substring(11));
-            //    Debug.Log("Player's turn: " + currentPlayer);
-
-            //    // Update UI to indicate the current player's turn
-            //    UnityMainThreadDispatcher.Instance().Enqueue(() =>
-            //    {
-            //        gameManager.UpdateCurrentPlayerText();
-            //    });
-            //}
             else if (message.StartsWith("MOVE:"))
             {
                 // Extract the move index from the message

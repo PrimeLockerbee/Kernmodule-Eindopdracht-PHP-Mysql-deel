@@ -708,12 +708,12 @@ GameObject:
   - component: {fileID: 1319529982}
   - component: {fileID: 1319529981}
   m_Layer: 0
-  m_Name: NickName
+  m_Name: MyPlayerNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1319529980
 RectTransform:
   m_ObjectHideFlags: 0
@@ -732,7 +732,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 183.6505, y: 50}
+  m_SizeDelta: {x: 178.8668, y: 33.7357}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1319529981
 MonoBehaviour:
@@ -754,7 +754,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Nickname
+  m_text: MyPlayerNumber
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -781,8 +781,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1762,6 +1762,7 @@ MonoBehaviour:
   player1Color: {r: 1, g: 0, b: 0, a: 0}
   player2Color: {r: 0.15860271, g: 0, b: 1, a: 0}
   currentPlayer: 0
+  playerNumberText: {fileID: 1319529981}
 --- !u!4 &1963628661
 Transform:
   m_ObjectHideFlags: 0
