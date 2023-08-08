@@ -19,6 +19,8 @@ public class Client : MonoBehaviour
 
     private Server server; // Store the Server reference
 
+    private int playerNumber = -1; // Initialize with a default value
+
     private void Start()
     {
         unityMainThreadDispatcher = UnityMainThreadDispatcher.Instance(); // Initialize the UnityMainThreadDispatcher
@@ -112,10 +114,13 @@ public class Client : MonoBehaviour
         {
             Debug.Log("Received message: " + message);
 
-            if (message.StartsWith("PLAYER_NUMBER:"))
+            if (message.StartsWith("PLAYER_NUMBER:") && playerNumber == -1)
             {
                 int playerNumber = int.Parse(message.Substring(14));
                 Debug.Log("Assigned player number: " + playerNumber);
+
+                // Set the player number for this client
+                this.playerNumber = playerNumber;
 
                 // Update the GameManager with the player number
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
