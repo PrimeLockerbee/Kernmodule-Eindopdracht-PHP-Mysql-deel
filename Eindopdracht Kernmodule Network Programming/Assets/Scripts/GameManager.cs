@@ -20,6 +20,16 @@ public class GameManager : MonoBehaviour
 
     private GameManager gameManager;
 
+    public TextMeshProUGUI playerNumberText; // Reference to the TextMeshProUGUI object
+
+    private int playerNumber; // Store the player number for this client
+
+    public void SetPlayerNumber(int number)
+    {
+        playerNumber = number;
+        playerNumberText.text = "Player Number: " + playerNumber;
+    }
+
     public void SetServer(Server server)
     {
         this.server = server;

@@ -82,12 +82,19 @@ public class Client : MonoBehaviour
                 return;
             }
 
-            byte[] data = new byte[bytesRead];
-            Array.Copy(receiveBuffer, data, bytesRead);
-            receivedData = System.Text.Encoding.ASCII.GetString(data);
+            receivedData += System.Text.Encoding.ASCII.GetString(receiveBuffer, 0, bytesRead);
 
-            // Process the received data
-            ProcessData(receivedData);
+            // Split receivedData into individual messages using the newline delimiter
+            string[] messages = receivedData.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Process each message
+            foreach (string message in messages)
+            {
+                ProcessData(message);
+            }
+
+            // Clear receivedData after processing
+            receivedData = "";
 
             // Continue reading from the stream
             networkStream.BeginRead(receiveBuffer, 0, receiveBuffer.Length, ReceiveCallback, null);
@@ -109,7 +116,12 @@ public class Client : MonoBehaviour
             {
                 int playerNumber = int.Parse(message.Substring(14));
                 Debug.Log("Assigned player number: " + playerNumber);
-                // Use the player number for any relevant logic in your client
+
+                // Update the GameManager with the player number
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    gameManager.SetPlayerNumber(playerNumber);
+                });
             }
             else if (message.StartsWith("START_GAME:"))
             {
@@ -147,7 +159,7 @@ public class Client : MonoBehaviour
     {
         try
         {
-            byte[] dataBuffer = System.Text.Encoding.ASCII.GetBytes(data + "\n");
+            byte[] dataBuffer = System.Text.Encoding.ASCII.GetBytes(data + "\n"); // Append newline delimiter
             networkStream.Write(dataBuffer, 0, dataBuffer.Length);
         }
         catch (Exception e)
