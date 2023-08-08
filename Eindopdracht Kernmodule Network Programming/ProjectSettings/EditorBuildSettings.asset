@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/ServerLogin.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/TicTacToe.unity
-    guid: 8a7addea5fbe08a4e887e8c3e00914c2
+    path: Assets/Scenes/NewTest.unity
+    guid: c214a8237281098479c1379072d86089
   m_configObjects: {}

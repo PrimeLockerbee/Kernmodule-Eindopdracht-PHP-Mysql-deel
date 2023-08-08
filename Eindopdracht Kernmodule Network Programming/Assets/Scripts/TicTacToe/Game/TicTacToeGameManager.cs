@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GameManager : MonoBehaviour
+public class TicTacToeGameManager : MonoBehaviour
 {
     public TextMeshProUGUI currentPlayerText;
     public TextMeshProUGUI gameResultText;
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     public void StartGame(int currentPlayer)
     {
         this.currentPlayer = currentPlayer;
-        gameBoard = new int[3, 3];
+        GameBoardThingy();
         isGameOver = false;
 
 
@@ -75,14 +75,25 @@ public class GameManager : MonoBehaviour
         UpdateCurrentPlayerText();
     }
 
+
+
     public void MakeMove(int cellIndex)
     {
         if (isGameOver)
+        {
+
             return;
 
-        // Check if the cell is already occupied
-        if (!IsCellEmpty(cellIndex))
-            return;
+
+        }
+
+        //// Check if the cell is already occupied
+        //if (!IsCellEmpty(cellIndex))
+        //    return;
+
+        GameBoardThingy();
+
+        Debug.Log(gameBoard);
 
         // Convert the cell index to row and column
         int row = cellIndex / 3;
@@ -113,6 +124,19 @@ public class GameManager : MonoBehaviour
         // Send move information to all clients
         string moveData = "MOVE:" + cellIndex;
         server.BroadcastMessageToClients(moveData);
+    }
+
+    private void GameBoardThingy()
+    {
+        gameBoard = new int[3, 3];
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                gameBoard[i, j] = -1;
+            }
+        }
     }
 
     public void UpdateCellVisual(int index)

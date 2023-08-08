@@ -19,11 +19,14 @@ public class Server : MonoBehaviour
     public GameManager startGame;
 
     private int connectedClients;
+    private int nextPlayerNumber = 1;
 
     HashSet<int> assignedPlayerNumbers = new HashSet<int>(); // Keep track of assigned player numbers
 
-    public void StartEpic()
+    public void StartGameServer()
     {
+        InitializeServer();
+
         startGame = FindObjectOfType<GameManager>();
         if (startGame != null)
         {
@@ -33,8 +36,6 @@ public class Server : MonoBehaviour
         {
             Debug.LogError("GameManager not found in the scene!");
         }
-
-        InitializeServer();
     }
 
     public void InitializeServer()
@@ -63,24 +64,14 @@ public class Server : MonoBehaviour
 
                 connectedClients++;
 
-                // Check if the desired number of players has been reached
-                if (connectedClients == MaxClients)
-                {
-                    isGameActive = true;
-                    Debug.Log("Game is now active!");
+                // Assign player numbers based on connection order
+                int playerNumber = nextPlayerNumber;
+                nextPlayerNumber++;
 
-                    // Assign player numbers to clients
-                    for (int i = 0; i < MaxClients; i++)
-                    {
-                        int playerNumber = GetUniquePlayerNumber(); // Get a unique player number
-                        SendMessageToClient(i, "PLAYER_NUMBER:" + playerNumber);
-                        BroadcastMessageToClients("THIS WORKS");
-                    }
+                assignedPlayerNumbers.Add(playerNumber); // Add the player number to the set of assigned numbers
 
-
-                    // Start the game here or notify the GameManager to start the game
-                    startGame.StartGame(clientIndex + 1);
-                }
+                Debug.Log("Assigned player number: " + playerNumber);
+                BroadcastMessageToClients("PLAYER_NUMBER:" + playerNumber);
             }
             else
             {
@@ -152,17 +143,21 @@ public class Server : MonoBehaviour
         }
     }
 
-    private int GetUniquePlayerNumber()
+    private void Update()
     {
-        int playerNumber = UnityEngine.Random.Range(1, MaxClients + 1); // Generate a random player number
-
-        // Check if the player number is already assigned, generate a new one until unique
-        while (assignedPlayerNumbers.Contains(playerNumber))
+        if (!isGameActive && connectedClients == MaxClients)
         {
-            playerNumber = UnityEngine.Random.Range(1, MaxClients + 1);
-        }
+            // Determine the first player (randomly in this example)
+            int firstPlayer = UnityEngine.Random.Range(1, MaxClients + 1);
 
-        assignedPlayerNumbers.Add(playerNumber); // Add the player number to the set of assigned numbers
-        return playerNumber;
+            Debug.Log("Max clients connected, game starting");
+
+            // Broadcast the start of the game and the first player's number
+            BroadcastMessageToClients("START_GAME:" + firstPlayer);
+
+            // Set the game as active
+            isGameActive = true;
+        }
     }
+
 }
