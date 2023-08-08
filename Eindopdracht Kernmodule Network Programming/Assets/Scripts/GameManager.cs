@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     private Server server;
 
+    private GameManager gameManager;
+
     public void SetServer(Server server)
     {
         this.server = server;
@@ -27,16 +29,16 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("StartGame called with firstPlayer: " + firstPlayer);
 
-        //is.gameObject = new GameManager();
+        //this.gameManager = new GameManager();
 
-        currentPlayer = firstPlayer;
+        this.currentPlayer = firstPlayer;
 
         isGameOver = false;
 
         Debug.Log("StartGame called. Current player: " + currentPlayer);
 
         // Update the currentPlayerText on all clients
-        server.BroadcastMessageToClients("PLAYERTURN:" + currentPlayer);
+        //server.BroadcastMessageToClients("PLAYERTURN:" + currentPlayer);
 
         UpdateCurrentPlayerText();
     }

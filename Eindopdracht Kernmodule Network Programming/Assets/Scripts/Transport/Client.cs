@@ -24,8 +24,6 @@ public class Client : MonoBehaviour
         unityMainThreadDispatcher = UnityMainThreadDispatcher.Instance(); // Initialize the UnityMainThreadDispatcher
         gameManager = FindObjectOfType<GameManager>(); // Find and set the GameManager reference programmatically
 
-        server = FindObjectOfType<Server>();
-
         if (gameManager != null)
         {
             Debug.Log("GameManager reference assigned.");
@@ -60,8 +58,6 @@ public class Client : MonoBehaviour
 
                 networkStream = client.GetStream();
                 networkStream.BeginRead(receiveBuffer, 0, receiveBuffer.Length, ReceiveCallback, null);
-
-
             }
             else
             {
@@ -127,17 +123,17 @@ public class Client : MonoBehaviour
                     gameManager.UpdateCurrentPlayerText(); // Update the UI text
                 });
             }
-            else if (message.StartsWith("PLAYERTURN:"))
-            {
-                int currentPlayer = int.Parse(message.Substring(11));
-                Debug.Log("Player's turn: " + currentPlayer);
+            //else if (message.StartsWith("PLAYERTURN:"))
+            //{
+            //    int currentPlayer = int.Parse(message.Substring(11));
+            //    Debug.Log("Player's turn: " + currentPlayer);
 
-                // Update UI to indicate the current player's turn
-                UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                {
-                    gameManager.UpdateCurrentPlayerText();
-                });
-            }
+            //    // Update UI to indicate the current player's turn
+            //    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+            //    {
+            //        gameManager.UpdateCurrentPlayerText();
+            //    });
+            //}
             else if (message.StartsWith("MOVE:"))
             {
                 // Extract the move index from the message
