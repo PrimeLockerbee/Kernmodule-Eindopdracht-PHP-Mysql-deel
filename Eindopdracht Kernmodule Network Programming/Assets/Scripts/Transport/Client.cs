@@ -137,7 +137,7 @@ public class Client : MonoBehaviour
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
                     gameManager.StartGame(firstPlayer);
-                    //gameManager.UpdateCurrentPlayerText(); // Update the UI text
+                    gameManager.UpdateCurrentPlayerText(); // Update the UI text
                 });
             }
             else if (message == "SWITCH_PLAYER")
@@ -151,18 +151,28 @@ public class Client : MonoBehaviour
             {
                 // Extract the move index from the message
                 int moveIndex = int.Parse(message.Substring(5));
-                // Call the GameManager's MakeMove function with the received move index
-                //gameManager.MakeMove(moveIndex);
+
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    // Call the GameManager's MakeMove function with the received move index
+                    gameManager.MakeMove(moveIndex);
+                });
             }
             else if (message == "WIN")
             {
-                // Call the GameManager's HandleWin function with the player index
-                //gameManager.HandleWin(gameManager.currentPlayer);
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    // Call the GameManager's HandleWin function with the player index
+                    gameManager.HandleWin(gameManager.currentPlayer);
+                });
             }
             else if (message == "DRAW")
             {
-                // Call the GameManager's HandleDraw function
-                //gameManager.HandleDraw();
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    // Call the GameManager's HandleDraw function
+                    gameManager.HandleDraw();
+                });
             }
         }
     }
