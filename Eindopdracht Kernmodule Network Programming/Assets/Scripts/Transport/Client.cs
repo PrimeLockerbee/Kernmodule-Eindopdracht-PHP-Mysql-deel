@@ -1,6 +1,9 @@
 using System;
+using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Client : MonoBehaviour
 {
@@ -17,7 +20,7 @@ public class Client : MonoBehaviour
 
     private UnityMainThreadDispatcher unityMainThreadDispatcher; // Reference to the UnityMainThreadDispatcher instance
 
-    private Server server; // Store the Server reference
+    public Server server; // Store the Server reference
 
     private int playerNumber = -1; // Initialize with a default value
 
@@ -107,9 +110,10 @@ public class Client : MonoBehaviour
         }
     }
 
+
     public void ProcessData(string data)
     {
-        string[] messages = data.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        string[] messages = data.Split(new string[] { "###" }, StringSplitOptions.RemoveEmptyEntries);
         foreach (string message in messages)
         {
             Debug.Log("Received message: " + message);
@@ -140,11 +144,11 @@ public class Client : MonoBehaviour
                     gameManager.UpdateCurrentPlayerText(); // Update the UI text
                 });
             }
-            else if (message == "SWITCH_PLAYER")
+            else if (message == "SWITCH_PLAYER" && playerNumber == gameManager.currentPlayer) // Check if the playerNumber matches
             {
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
-                    gameManager.SwitchPlayer();
+                    gameManager.SwitchPlayerAndBroadcast(); // Switch player only if it's the current player's turn
                 });
             }
             else if (message.StartsWith("MOVE:"))
@@ -175,6 +179,19 @@ public class Client : MonoBehaviour
                 });
             }
         }
+    }
+
+    public void SendMove(int cellIndex)
+    {
+        string moveData = "MOVE:" + cellIndex;
+        SendDataToServer(moveData);
+    }
+
+    public void SendDataToServer(string message)
+    {
+        byte[] messageData = Encoding.ASCII.GetBytes(message);
+        networkStream.Write(messageData, 0, messageData.Length);
+        Debug.Log("Sent message to server: " + message);
     }
 
     public void SendData(string data)

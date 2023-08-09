@@ -8,12 +8,11 @@ public class CellControler : MonoBehaviour
     public int index; // Add the index variable
 
     private Button button;
-    private TicTacToeGameManager gameManager;
+    public GameManager gameManager;
 
     private void Awake()
     {
         button = GetComponent<Button>();
-        gameManager = FindObjectOfType<TicTacToeGameManager>();
     }
 
     public void HandleCellClick()

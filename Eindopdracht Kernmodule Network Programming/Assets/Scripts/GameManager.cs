@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private int[,] gameBoard;
     private bool isGameOver;
 
-    private Server server;
+    public Server server;
 
     public Button[] cellButtons;
 
@@ -116,11 +116,8 @@ public class GameManager : MonoBehaviour
         else
         {
             // Switch to the next player's turn
-            SwitchPlayer();
-            //UpdateCurrentPlayerText();
+            SwitchPlayerAndBroadcast(); // Use the function to switch player and broadcast
         }
-
-        UpdateCurrentPlayerText();
 
         // Send move information to all clients
         string moveData = "MOVE:" + cellIndex;
@@ -160,12 +157,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SwitchPlayer()
+    public void SwitchPlayerAndBroadcast()
     {
-        currentPlayer = (currentPlayer == 1) ? 2 : 1;
-        Debug.Log("SwitchPlayer called. Current player: " + currentPlayer);
-        UpdateCurrentPlayerText(); // Add this line to update the UI text
+        SetCurrentPlayer((currentPlayer == 1) ? 2 : 1); // Switch the player turn in the GameManager
+        UpdateCurrentPlayerText(); // Update UI for the new player turn
+
+        // Broadcast the turn switch to all clients
+        if (server != null)
+        {
+            server.BroadcastSwitchPlayer();
+            Debug.Log("TurnSwitch");
+        }
     }
+
+    public void SetCurrentPlayer(int playerNumber)
+    {
+        currentPlayer = playerNumber;
+        UpdateCurrentPlayerText(); // Call the method to update UI
+    }
+
 
     public bool CheckWinCondition(int player)
     {

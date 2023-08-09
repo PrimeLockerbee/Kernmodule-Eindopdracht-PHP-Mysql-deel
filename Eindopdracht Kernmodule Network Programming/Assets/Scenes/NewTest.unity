@@ -217,6 +217,7 @@ MonoBehaviour:
   serverAddress: 127.0.0.1
   serverPort: 8888
   gameManager: {fileID: 1963628660}
+  server: {fileID: 1473076392}
 --- !u!4 &249605826
 Transform:
   m_ObjectHideFlags: 0
@@ -705,7 +706,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &793408618
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1242,6 +1243,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1980165560}
     m_Modifications:
+    - target: {fileID: 4424801921892337496, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1963628660}
+    - target: {fileID: 4424801922013364716, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1963628660}
+    - target: {fileID: 4424801922046034759, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1963628660}
+    - target: {fileID: 4424801922351918423, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1963628660}
+    - target: {fileID: 4424801922867185329, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1963628660}
+    - target: {fileID: 4424801923403020230, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1963628660}
+    - target: {fileID: 4424801923560287742, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1963628660}
+    - target: {fileID: 4424801923603845709, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1963628660}
+    - target: {fileID: 4424801923716081853, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1963628660}
     - target: {fileID: 8650957773080164299, guid: 77532ec9b52b11d41a27e3033032edaf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2135,6 +2172,7 @@ MonoBehaviour:
   player1Color: {r: 1, g: 0, b: 0, a: 0}
   player2Color: {r: 0.15860271, g: 0, b: 1, a: 0}
   currentPlayer: 0
+  server: {fileID: 1473076392}
   cellButtons: []
 --- !u!4 &1963628661
 Transform:

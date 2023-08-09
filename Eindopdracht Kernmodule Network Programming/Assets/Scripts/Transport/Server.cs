@@ -134,14 +134,16 @@ public class Server : MonoBehaviour
 
     public void BroadcastMessageToClients(string message)
     {
-        for (int i = 0; i < MaxClients; i++)
+        string delimitedMessage = message + "###"; // Add delimiter
+        for (int i = 0; i < connectedClients; i++)
         {
             if (clients[i] != null)
             {
-                SendMessageToClient(i, message);
+                SendMessageToClient(i, delimitedMessage);
             }
         }
     }
+
     public void BroadcastSwitchPlayer()
     {
         BroadcastMessageToClients("SWITCH_PLAYER");
