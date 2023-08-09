@@ -128,6 +128,13 @@ public class Client : MonoBehaviour
                     gameManager.SetPlayerNumber(playerNumber);
                 });
             }
+            else if (message == "SWITCH_PLAYER")
+            {
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    gameManager.SwitchPlayer();
+                });
+            }
             else if (message.StartsWith("START_GAME:"))
             {
                 int firstPlayer = int.Parse(message.Substring(11));
