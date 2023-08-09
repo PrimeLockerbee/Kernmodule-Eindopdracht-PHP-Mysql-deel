@@ -34,49 +34,49 @@ public class GameManager : MonoBehaviour
         //Debug.Log("StartGame called. Current player: " + currentPlayer);
 
         this.currentPlayer = firstPlayer;
-        GameBoardThingy();
+        //GameBoardThingy();
         isGameOver = false;
 
         // Update the text components of each cell with their respective indices
-        for (int row = 0; row < 3; row++)
-        {
-            for (int column = 0; column < 3; column++)
-            {
-                int index = row * 3 + column;
-                GameObject cellParentObject = GameObject.Find("Cell_" + (row + 1) + (column + 1));
+        //for (int row = 0; row < 3; row++)
+        //{
+        //    for (int column = 0; column < 3; column++)
+        //    {
+        //        int index = row * 3 + column;
+        //        GameObject cellParentObject = GameObject.Find("Cell_" + (row + 1) + (column + 1));
 
-                if (cellParentObject != null)
-                {
-                    Button cellButton = cellParentObject.GetComponentInChildren<Button>();
-                    cellButton.onClick.AddListener(() => MakeMove(index));
+        //        if (cellParentObject != null)
+        //        {
+        //            Button cellButton = cellParentObject.GetComponentInChildren<Button>();
+        //            cellButton.onClick.AddListener(() => MakeMove(index));
 
-                    CellControler cellController = cellParentObject.GetComponentInChildren<CellControler>();
+        //            CellControler cellController = cellParentObject.GetComponentInChildren<CellControler>();
 
-                    if (cellController != null)
-                    {
-                        TextMeshProUGUI buttonText = cellController.GetComponentInChildren<TextMeshProUGUI>();
+        //            if (cellController != null)
+        //            {
+        //                TextMeshProUGUI buttonText = cellController.GetComponentInChildren<TextMeshProUGUI>();
 
-                        if (buttonText != null)
-                        {
-                            buttonText.text = "";
-                            buttonText.color = (currentPlayer == 1) ? player1Color : player2Color; // Set text color based on current player
-                        }
-                        else
-                        {
-                            Debug.LogError("TextMeshProUGUI component not found on cell: " + cellParentObject.name);
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError("CellControler component not found on cell: " + cellParentObject.name);
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Cell object not found: Cell_" + (row + 1) + (column + 1));
-                }
-            }
-        }
+        //                if (buttonText != null)
+        //                {
+        //                    buttonText.text = "";
+        //                    buttonText.color = (currentPlayer == 1) ? player1Color : player2Color; // Set text color based on current player
+        //                }
+        //                else
+        //                {
+        //                    Debug.LogError("TextMeshProUGUI component not found on cell: " + cellParentObject.name);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                Debug.LogError("CellControler component not found on cell: " + cellParentObject.name);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Debug.LogError("Cell object not found: Cell_" + (row + 1) + (column + 1));
+        //        }
+        //    }
+        //}
 
         UpdateCurrentPlayerText();
     }
