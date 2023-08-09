@@ -140,6 +140,13 @@ public class Client : MonoBehaviour
                     gameManager.UpdateCurrentPlayerText(); // Update the UI text
                 });
             }
+            else if (message == "SWITCH_PLAYER")
+            {
+                UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                {
+                    gameManager.SwitchPlayer();
+                });
+            }
             else if (message.StartsWith("MOVE:"))
             {
                 // Extract the move index from the message
