@@ -160,8 +160,4 @@ public class Server : MonoBehaviour
         }
     }
 
-    public void BroadcastSwitchPlayer()
-    {
-        BroadcastMessageToClients("SWITCH_PLAYER");
-    }
 }
