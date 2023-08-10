@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         if (!IsCellEmpty(cellIndex))
             return;
 
-        Debug.Log(gameBoard);
+        Debug.Log("Server: Making move for cellIndex " + cellIndex);
 
         // Convert the cell index to row and column
         int row = cellIndex / 3;
@@ -58,17 +58,18 @@ public class GameManager : MonoBehaviour
         // Set the cell with the current player's marker (1 for Player 1, 2 for Player 2)
         gameBoard[row, column] = currentPlayer;
 
-        // Update the visual representation of the game board
+
+        // Update the visual representation of the game board with the currentPlayer's marker
         UpdateCellVisual(cellIndex, currentPlayer);
 
         // Check for a win condition or a draw
         if (CheckWinCondition(currentPlayer))
         {
-            HandleWin(currentPlayer);
+            server.BroadcastWin();
         }
         else if (CheckDraw())
         {
-            HandleDraw();
+            server.BroadcastDraw();
         }
         else
         {
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour
         // Send move information to all clients
         string moveData = "MOVE:" + cellIndex;
         server.BroadcastMessageToClients(moveData);
+        Debug.Log("Move data sent: " + moveData);
     }
 
     public void UpdateCellVisual(int index, int playerNumber)
@@ -114,7 +116,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void SwitchPlayer()
     {
         currentPlayer = (currentPlayer == 1) ? 2 : 1;
@@ -127,7 +128,6 @@ public class GameManager : MonoBehaviour
         currentPlayer = playerNumber;
         UpdateCurrentPlayerText(); // Call the method to update UI
     }
-
 
     public bool CheckWinCondition(int player)
     {
@@ -179,9 +179,6 @@ public class GameManager : MonoBehaviour
         gameResultText.color = (player == 1)
             ? new Color(player1Color.r, player1Color.g, player1Color.b, 255f / 255f)
             : new Color(player2Color.r, player2Color.g, player2Color.b, 255f / 255f);
-
-        // Broadcast win message to clients
-        server.BroadcastMessageToClients("WIN:" + player);
     }
 
     public void HandleDraw()
@@ -189,8 +186,7 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         gameResultText.text = "It's a draw!";
 
-        // Broadcast draw message to clients
-        server.BroadcastMessageToClients("DRAW");
+        gameResultText.color = new Color(0, 0, 0, 255f / 255f);
     }
 
     public void UpdateCurrentPlayerText()

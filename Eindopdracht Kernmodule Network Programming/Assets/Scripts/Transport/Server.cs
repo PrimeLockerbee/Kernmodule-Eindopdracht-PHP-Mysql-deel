@@ -149,6 +149,16 @@ public class Server : MonoBehaviour
         BroadcastMessageToClients("SWITCH_PLAYER");
     }
 
+    public void BroadcastWin()
+    {
+        BroadcastMessageToClients("WIN");
+    }
+
+    public void BroadcastDraw()
+    {
+        BroadcastMessageToClients("DRAW");
+    }
+
 
     private void Update()
     {

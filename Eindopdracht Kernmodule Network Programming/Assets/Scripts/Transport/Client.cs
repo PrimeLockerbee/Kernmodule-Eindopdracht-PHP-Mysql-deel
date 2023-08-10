@@ -190,6 +190,7 @@ public class Client : MonoBehaviour
     {
         byte[] messageData = Encoding.ASCII.GetBytes(message);
         networkStream.Write(messageData, 0, messageData.Length);
+        networkStream.Flush(); // Add this line to flush the data immediately
         Debug.Log("Sent message to server: " + message);
     }
 
