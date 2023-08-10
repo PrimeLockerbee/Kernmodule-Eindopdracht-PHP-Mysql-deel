@@ -49,8 +49,6 @@ public class GameManager : MonoBehaviour
         if (!IsCellEmpty(cellIndex))
             return;
 
-        GameBoardThingy();
-
         Debug.Log(gameBoard);
 
         // Convert the cell index to row and column
@@ -61,7 +59,7 @@ public class GameManager : MonoBehaviour
         gameBoard[row, column] = currentPlayer;
 
         // Update the visual representation of the game board
-        UpdateCellVisual(cellIndex);
+        UpdateCellVisual(cellIndex, currentPlayer);
 
         // Check for a win condition or a draw
         if (CheckWinCondition(currentPlayer))
@@ -83,7 +81,7 @@ public class GameManager : MonoBehaviour
         server.BroadcastMessageToClients(moveData);
     }
 
-    public void UpdateCellVisual(int index)
+    public void UpdateCellVisual(int index, int playerNumber)
     {
         string cellName = "Cell_" + (index + 1);
         GameObject cellObject = GameObject.Find(cellName);
@@ -94,14 +92,14 @@ public class GameManager : MonoBehaviour
 
             if (buttonText != null)
             {
-                // Set the visual representation based on the current player
-                buttonText.text = (currentPlayer == 1) ? "X" : "O";
+                // Set the visual representation based on the player's marker
+                buttonText.text = (playerNumber == 1) ? "X" : "O";
 
                 // Get the existing color
                 Color existingColor = buttonText.color;
 
                 // Set the new color with the existing alpha value set to maximum (255)
-                buttonText.color = (currentPlayer == 1)
+                buttonText.color = (playerNumber == 1)
                     ? new Color(player1Color.r, player1Color.g, player1Color.b, 255f / 255f)
                     : new Color(player2Color.r, player2Color.g, player2Color.b, 255f / 255f);
             }
@@ -115,6 +113,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Cell object not found: " + cellName);
         }
     }
+
 
     public void SwitchPlayer()
     {

@@ -141,7 +141,6 @@ public class Client : MonoBehaviour
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
                     gameManager.StartGame(firstPlayer);
-                    //gameManager.UpdateCurrentPlayerText(); // Update the UI text
                 });
             }
             else if (message.StartsWith("SWITCH_PLAYER")) // Check if the playerNumber matches
