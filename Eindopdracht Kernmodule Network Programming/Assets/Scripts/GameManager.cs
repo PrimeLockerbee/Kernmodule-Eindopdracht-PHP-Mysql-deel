@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         gameState.MakeMove(cellIndex, playerNumber); // Use the MakeMove from GameState
 
         // Update the visual representation of the game board with the currentPlayer's marker
-        UpdateCellVisual(cellIndex, playerNumber);
+        //UpdateCellVisual(cellIndex, playerNumber);
 
         // Send move information to all clients
         string moveData = "MOVE:" + cellIndex;
