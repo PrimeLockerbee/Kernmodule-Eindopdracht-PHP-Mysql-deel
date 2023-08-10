@@ -159,7 +159,6 @@ public class Server : MonoBehaviour
         BroadcastMessageToClients("DRAW");
     }
 
-
     private void Update()
     {
         if (!isGameActive && connectedClients == MaxClients)

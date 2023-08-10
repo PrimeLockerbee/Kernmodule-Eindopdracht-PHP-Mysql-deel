@@ -19,7 +19,8 @@ public class CellControler : MonoBehaviour
     {
         if (gameManager != null)
         {
-            gameManager.MakeMove(index);
+            // Call the GameState's MakeMove function with the cell index and player number
+            gameManager.gameState.MakeMove(index, gameManager.playerNumber);
         }
     }
 }

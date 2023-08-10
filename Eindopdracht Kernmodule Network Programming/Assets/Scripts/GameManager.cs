@@ -21,7 +21,9 @@ public class GameManager : MonoBehaviour
 
     public Button[] cellButtons;
 
-    private int playerNumber; // Store the player number for this client
+    public int playerNumber; // Store the player number for this client
+
+    public GameState gameState = new GameState();
 
     public void SetServer(Server server)
     {
@@ -30,10 +32,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGame(int firstPlayer)
     {
-        //Debug.Log("StartGame called with firstPlayer: " + firstPlayer);
-        //Debug.Log("StartGame called. Current player: " + currentPlayer);
-
         this.currentPlayer = firstPlayer;
+        gameState.SetCurrentPlayer(firstPlayer); // Update the current player in GameState
         GameBoardThingy();
         isGameOver = false;
 
@@ -42,45 +42,34 @@ public class GameManager : MonoBehaviour
 
     public void MakeMove(int cellIndex)
     {
-        if (isGameOver || !IsCellEmpty(cellIndex) || currentPlayer != playerNumber)
+        if (gameState.isGameOver || !gameState.IsCellEmpty(cellIndex) || gameState.currentPlayer != playerNumber)
             return;
 
-        //Check if the cell is already occupied
-        if (!IsCellEmpty(cellIndex))
-            return;
-
-        Debug.Log("Server: Making move for cellIndex " + cellIndex);
-
-        // Convert the cell index to row and column
-        int row = cellIndex / 3;
-        int column = cellIndex % 3;
-
-        // Set the cell with the current player's marker (1 for Player 1, 2 for Player 2)
-        gameBoard[row, column] = currentPlayer;
-
+        gameState.MakeMove(cellIndex, playerNumber); // Use the MakeMove from GameState
 
         // Update the visual representation of the game board with the currentPlayer's marker
-        UpdateCellVisual(cellIndex, currentPlayer);
+        UpdateCellVisual(cellIndex, playerNumber);
+
+        // Send move information to all clients
+        string moveData = "MOVE:" + cellIndex;
+        server.BroadcastMessageToClients(moveData);
+        Debug.Log("Move data sent: " + moveData);
 
         // Check for a win condition or a draw
-        if (CheckWinCondition(currentPlayer))
+        if (gameState.CheckWinCondition(playerNumber))
         {
             server.BroadcastWin();
         }
-        else if (CheckDraw())
+        else if (gameState.CheckDraw())
         {
             server.BroadcastDraw();
         }
         else
         {
             // Switch to the next player's turn
-            server.BroadcastSwitchPlayer(); // Use the function to switch player and broadcast
+            gameState.SwitchPlayer();
+            server.BroadcastSwitchPlayer();
         }
-
-        // Send move information to all clients
-        string moveData = "MOVE:" + cellIndex;
-        server.BroadcastMessageToClients(moveData);
-        Debug.Log("Move data sent: " + moveData);
     }
 
     public void UpdateCellVisual(int index, int playerNumber)
@@ -116,60 +105,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SwitchPlayer()
-    {
-        currentPlayer = (currentPlayer == 1) ? 2 : 1;
-        Debug.Log("SwitchPlayer called. Current player: " + currentPlayer);
-        UpdateCurrentPlayerText(); // Add this line to update the UI text
-    }
-
-    public void SetCurrentPlayer(int playerNumber)
-    {
-        currentPlayer = playerNumber;
-        UpdateCurrentPlayerText(); // Call the method to update UI
-    }
-
-    public bool CheckWinCondition(int player)
-    {
-        // Check for horizontal win conditions
-        if (gameBoard[0, 0] == player && gameBoard[0, 1] == player && gameBoard[0, 2] == player)
-            return true;
-        if (gameBoard[1, 0] == player && gameBoard[1, 1] == player && gameBoard[1, 2] == player)
-            return true;
-        if (gameBoard[2, 0] == player && gameBoard[2, 1] == player && gameBoard[2, 2] == player)
-            return true;
-
-        // Check for vertical win conditions
-        if (gameBoard[0, 0] == player && gameBoard[1, 0] == player && gameBoard[2, 0] == player)
-            return true;
-        if (gameBoard[0, 1] == player && gameBoard[1, 1] == player && gameBoard[2, 1] == player)
-            return true;
-        if (gameBoard[0, 2] == player && gameBoard[1, 2] == player && gameBoard[2, 2] == player)
-            return true;
-
-        // Check for diagonal win conditions
-        if (gameBoard[0, 0] == player && gameBoard[1, 1] == player && gameBoard[2, 2] == player)
-            return true;
-        if (gameBoard[0, 2] == player && gameBoard[1, 1] == player && gameBoard[2, 0] == player)
-            return true;
-
-        return false; // Return true if a win condition is met
-    }
-
-    public bool CheckDraw()
-    {
-        for (int row = 0; row < 3; row++)
-        {
-            for (int column = 0; column < 3; column++)
-            {
-                if (gameBoard[row, column] == 0)
-                    return false; // If any cell is empty, it's not a draw
-            }
-        }
-
-        return true; // Return true if all cells are occupied (draw)
-    }
-
     public void HandleWin(int player)
     {
         isGameOver = true;
@@ -203,13 +138,6 @@ public class GameManager : MonoBehaviour
     {
         playerNumber = number;
         playerNumberText.text = "Player Number: " + playerNumber;
-    }
-
-    public bool IsCellEmpty(int cellIndex)
-    {
-        int row = cellIndex / 3;
-        int column = cellIndex % 3;
-        return gameBoard[row, column] == 0;
     }
 
     private void GameBoardThingy()

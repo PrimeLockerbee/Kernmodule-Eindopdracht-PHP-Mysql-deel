@@ -24,6 +24,8 @@ public class Client : MonoBehaviour
 
     private int playerNumber = -1; // Initialize with a default value
 
+    private GameState gameState = new GameState();
+
     private void Start()
     {
         unityMainThreadDispatcher = UnityMainThreadDispatcher.Instance(); // Initialize the UnityMainThreadDispatcher
@@ -147,16 +149,25 @@ public class Client : MonoBehaviour
             {
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
-                    gameManager.SwitchPlayer(); // Switch player only if it's the current player's turn
+                    gameState.SwitchPlayer(); // Switch player only if it's the current player's turn
+
+                    // Update the GameManager's current player
+                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
+                    {
+                        gameManager.currentPlayer = gameState.currentPlayer;
+                    });
                 });
             }
             else if (message.StartsWith("MOVE:"))
             {
-                // Extract the move index from the message
-                int moveIndex = int.Parse(message.Substring(5));
-
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
+                    // Extract the move index from the message
+                    int moveIndex = int.Parse(message.Substring(5));
+
+                    // Call the GameState's MakeMove function with the received move index and player number
+                    gameState.MakeMove(moveIndex, playerNumber);
+
                     // Call the GameManager's MakeMove function with the received move index
                     gameManager.MakeMove(moveIndex);
                 });
@@ -166,7 +177,7 @@ public class Client : MonoBehaviour
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
                     // Call the GameManager's HandleWin function with the player index
-                    gameManager.HandleWin(gameManager.currentPlayer);
+                    gameManager.HandleWin(playerNumber);
                 });
             }
             else if (message == "DRAW")
