@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("StartGame called. Current player: " + currentPlayer);
 
         this.currentPlayer = firstPlayer;
+        GameBoardThingy();
         isGameOver = false;
 
         UpdateCurrentPlayerText();
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
         if (isGameOver || !IsCellEmpty(cellIndex) || currentPlayer != playerNumber)
             return;
 
-        // Check if the cell is already occupied
+        //Check if the cell is already occupied
         if (!IsCellEmpty(cellIndex))
             return;
 
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
         else
         {
             // Switch to the next player's turn
-            SwitchPlayerAndBroadcast(); // Use the function to switch player and broadcast
+            server.BroadcastSwitchPlayer(); // Use the function to switch player and broadcast
         }
 
         // Send move information to all clients
@@ -115,17 +116,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SwitchPlayerAndBroadcast()
+    public void SwitchPlayer()
     {
-        SetCurrentPlayer((currentPlayer == 1) ? 2 : 1); // Switch the player turn in the GameManager
-        UpdateCurrentPlayerText(); // Update UI for the new player turn
-
-        // Broadcast the turn switch to all clients
-        if (server != null)
-        {
-            server.BroadcastSwitchPlayer();
-            Debug.Log("TurnSwitch");
-        }
+        currentPlayer = (currentPlayer == 1) ? 2 : 1;
+        Debug.Log("SwitchPlayer called. Current player: " + currentPlayer);
+        UpdateCurrentPlayerText(); // Add this line to update the UI text
     }
 
     public void SetCurrentPlayer(int playerNumber)
@@ -213,5 +208,25 @@ public class GameManager : MonoBehaviour
     {
         playerNumber = number;
         playerNumberText.text = "Player Number: " + playerNumber;
+    }
+
+    public bool IsCellEmpty(int cellIndex)
+    {
+        int row = cellIndex / 3;
+        int column = cellIndex % 3;
+        return gameBoard[row, column] == 0;
+    }
+
+    private void GameBoardThingy()
+    {
+        gameBoard = new int[3, 3];
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                gameBoard[i, j] = 0; // Initialize with empty cells
+            }
+        }
     }
 }
