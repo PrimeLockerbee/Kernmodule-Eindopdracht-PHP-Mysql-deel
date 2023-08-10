@@ -152,10 +152,10 @@ public class Client : MonoBehaviour
                     gameState.SwitchPlayer(); // Switch player only if it's the current player's turn
 
                     // Update the GameManager's current player
-                    UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                    {
-                        gameManager.currentPlayer = gameState.currentPlayer;
-                    });
+                    gameManager.currentPlayer = gameState.currentPlayer;
+
+                    gameManager.UpdateCurrentPlayerText(); // This method updates the currentPlayerText UI element
+
                 });
             }
             else if (message.StartsWith("MOVE:"))
@@ -176,16 +176,28 @@ public class Client : MonoBehaviour
             {
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
-                    // Call the GameManager's HandleWin function with the player index
-                    gameManager.HandleWin(playerNumber);
+                    if (gameState.CheckWinCondition(playerNumber)) // Check if the current player wins
+                    {
+                        gameManager.HandleWin(playerNumber);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Received WIN message, but no win condition found.");
+                    }
                 });
             }
             else if (message == "DRAW")
             {
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
-                    // Call the GameManager's HandleDraw function
-                    gameManager.HandleDraw();
+                    if (gameState.CheckDraw())
+                    {
+                        gameManager.HandleDraw();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Received DRAW message, but the game is not a draw.");
+                    }
                 });
             }
         }
