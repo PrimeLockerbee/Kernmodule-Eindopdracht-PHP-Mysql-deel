@@ -141,7 +141,7 @@ public class Client : MonoBehaviour
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
                     gameManager.StartGame(firstPlayer);
-                    gameManager.UpdateCurrentPlayerText(); // Update the UI text
+                    //gameManager.UpdateCurrentPlayerText(); // Update the UI text
                 });
             }
             else if (message == "SWITCH_PLAYER" && playerNumber == gameManager.currentPlayer) // Check if the playerNumber matches
@@ -155,28 +155,18 @@ public class Client : MonoBehaviour
             {
                 // Extract the move index from the message
                 int moveIndex = int.Parse(message.Substring(5));
-
-                UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                {
-                    // Call the GameManager's MakeMove function with the received move index
-                    gameManager.MakeMove(moveIndex);
-                });
+                // Call the GameManager's MakeMove function with the received move index
+                //gameManager.MakeMove(moveIndex);
             }
             else if (message == "WIN")
             {
-                UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                {
-                    // Call the GameManager's HandleWin function with the player index
-                    gameManager.HandleWin(gameManager.currentPlayer);
-                });
+                // Call the GameManager's HandleWin function with the player index
+                //gameManager.HandleWin(gameManager.currentPlayer);
             }
             else if (message == "DRAW")
             {
-                UnityMainThreadDispatcher.Instance().Enqueue(() =>
-                {
-                    // Call the GameManager's HandleDraw function
-                    gameManager.HandleDraw();
-                });
+                // Call the GameManager's HandleDraw function
+                //gameManager.HandleDraw();
             }
         }
     }

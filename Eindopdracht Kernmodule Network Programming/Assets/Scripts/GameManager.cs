@@ -34,49 +34,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("StartGame called. Current player: " + currentPlayer);
 
         this.currentPlayer = firstPlayer;
-        GameBoardThingy();
         isGameOver = false;
-
-        // Update the text components of each cell with their respective indices
-        for (int row = 0; row < 3; row++)
-        {
-            for (int column = 0; column < 3; column++)
-            {
-                int index = row * 3 + column;
-                GameObject cellParentObject = GameObject.Find("Cell_" + (row + 1) + (column + 1));
-
-                if (cellParentObject != null)
-                {
-                    Button cellButton = cellParentObject.GetComponentInChildren<Button>();
-                    cellButton.onClick.AddListener(() => MakeMove(index));
-
-                    CellControler cellController = cellParentObject.GetComponentInChildren<CellControler>();
-
-                    if (cellController != null)
-                    {
-                        TextMeshProUGUI buttonText = cellController.GetComponentInChildren<TextMeshProUGUI>();
-
-                        if (buttonText != null)
-                        {
-                            buttonText.text = "";
-                            buttonText.color = (currentPlayer == 1) ? player1Color : player2Color; // Set text color based on current player
-                        }
-                        else
-                        {
-                            Debug.LogError("TextMeshProUGUI component not found on cell: " + cellParentObject.name);
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError("CellControler component not found on cell: " + cellParentObject.name);
-                    }
-                }
-                else
-                {
-                    Debug.LogError("Cell object not found: Cell_" + (row + 1) + (column + 1));
-                }
-            }
-        }
 
         UpdateCurrentPlayerText();
     }
@@ -255,25 +213,5 @@ public class GameManager : MonoBehaviour
     {
         playerNumber = number;
         playerNumberText.text = "Player Number: " + playerNumber;
-    }
-
-    public bool IsCellEmpty(int cellIndex)
-    {
-        int row = cellIndex / 3;
-        int column = cellIndex % 3;
-        return gameBoard[row, column] == 0;
-    }
-
-    private void GameBoardThingy()
-    {
-        gameBoard = new int[3, 3];
-
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                gameBoard[i, j] = 0; // Initialize with empty cells
-            }
-        }
     }
 }
