@@ -42,18 +42,14 @@ public class GameManager : MonoBehaviour
 
     public void MakeMove(int cellIndex)
     {
-        if (gameState.isGameOver || !gameState.IsCellEmpty(cellIndex) || gameState.currentPlayer != playerNumber)
+        if (!gameState.IsCellEmpty(cellIndex) || gameState.currentPlayer != playerNumber)
             return;
 
-        gameState.MakeMove(cellIndex, playerNumber); // Use the MakeMove from GameState
+        // Call the GameState's MakeMove function with the received move index and player number
+        gameState.MakeMove(cellIndex, playerNumber);
 
         // Update the visual representation of the game board with the currentPlayer's marker
-        //UpdateCellVisual(cellIndex, playerNumber);
-
-        // Send move information to all clients
-        string moveData = "MOVE:" + cellIndex;
-        server.BroadcastMessageToClients(moveData);
-        Debug.Log("Move data sent: " + moveData);
+        UpdateCellVisual(cellIndex, playerNumber);
 
         // Check for a win condition or a draw
         if (gameState.CheckWinCondition(playerNumber))
@@ -70,6 +66,11 @@ public class GameManager : MonoBehaviour
             gameState.SwitchPlayer();
             server.BroadcastSwitchPlayer();
         }
+
+        // Send move information to all clients
+        string moveData = "MOVE:" + cellIndex;
+        server.BroadcastMessageToClients(moveData);
+        Debug.Log("Move data sent: " + moveData);
     }
 
     public void UpdateCellVisual(int index, int playerNumber)

@@ -165,13 +165,8 @@ public class Client : MonoBehaviour
                     // Extract the move index from the message
                     int moveIndex = int.Parse(message.Substring(5));
 
-                    // Call the GameState's MakeMove function with the received move index and player number
-                    gameState.MakeMove(moveIndex, playerNumber);
-
                     // Call the GameManager's MakeMove function with the received move index
                     gameManager.MakeMove(moveIndex);
-
-                    gameManager.UpdateCellVisual(moveIndex, playerNumber);
                 });
             }
             else if (message == "WIN")

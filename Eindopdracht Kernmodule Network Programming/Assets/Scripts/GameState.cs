@@ -10,6 +10,8 @@ public class GameState
     public int currentPlayer;
     public bool isGameOver;
 
+    public Server server;
+
     public GameState()
     {
         gameBoard = new int[3, 3];
