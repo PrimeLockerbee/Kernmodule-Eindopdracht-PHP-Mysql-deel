@@ -167,6 +167,8 @@ public class Client : MonoBehaviour
 
                     // Call the GameManager's MakeMove function with the received move index
                     gameManager.MakeMove(moveIndex);
+
+                    gameManager.UpdateCellVisual(moveIndex, playerNumber);
                 });
             }
             else if (message == "WIN")

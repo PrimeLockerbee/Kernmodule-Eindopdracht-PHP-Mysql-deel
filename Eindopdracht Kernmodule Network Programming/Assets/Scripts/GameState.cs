@@ -18,7 +18,7 @@ public class GameState
         currentPlayer = 1;
     }
 
-    // Add methods to update game state and handle synchronization
+    //Add methods to update game state and handle synchronization
     public void MakeMove(int cellIndex, int playerNumber)
     {
         int row = cellIndex / 3;
@@ -35,7 +35,7 @@ public class GameState
 
     public bool CheckWinCondition(int player)
     {
-        // Check for horizontal win conditions
+        //Check for horizontal win conditions
         if (gameBoard[0, 0] == player && gameBoard[0, 1] == player && gameBoard[0, 2] == player)
             return true;
         if (gameBoard[1, 0] == player && gameBoard[1, 1] == player && gameBoard[1, 2] == player)
@@ -43,7 +43,7 @@ public class GameState
         if (gameBoard[2, 0] == player && gameBoard[2, 1] == player && gameBoard[2, 2] == player)
             return true;
 
-        // Check for vertical win conditions
+        //Check for vertical win conditions
         if (gameBoard[0, 0] == player && gameBoard[1, 0] == player && gameBoard[2, 0] == player)
             return true;
         if (gameBoard[0, 1] == player && gameBoard[1, 1] == player && gameBoard[2, 1] == player)
@@ -51,13 +51,13 @@ public class GameState
         if (gameBoard[0, 2] == player && gameBoard[1, 2] == player && gameBoard[2, 2] == player)
             return true;
 
-        // Check for diagonal win conditions
+        //Check for diagonal win conditions
         if (gameBoard[0, 0] == player && gameBoard[1, 1] == player && gameBoard[2, 2] == player)
             return true;
         if (gameBoard[0, 2] == player && gameBoard[1, 1] == player && gameBoard[2, 0] == player)
             return true;
 
-        return false; // Return true if a win condition is met
+        return false; //Return true if a win condition is met
     }
 
     public bool CheckDraw()
@@ -67,11 +67,11 @@ public class GameState
             for (int column = 0; column < 3; column++)
             {
                 if (gameBoard[row, column] == 0)
-                    return false; // If any cell is empty, it's not a draw
+                    return false; //If any cell is empty, it's not a draw
             }
         }
 
-        return true; // Return true if all cells are occupied (draw)
+        return true; //Return true if all cells are occupied (draw)
     }
 
     public void SwitchPlayer()

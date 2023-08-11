@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CellControler : MonoBehaviour
 {
-    public int index; // Add the index variable
+    public int index; //Add the index variable
 
     private Button button;
     public GameManager gameManager;
@@ -19,10 +19,10 @@ public class CellControler : MonoBehaviour
     {
         if (gameManager != null)
         {
-            // Call the GameManager's MakeMove function with the cell index
+            //Call the GameManager's MakeMove function with the cell index
             gameManager.MakeMove(index);
 
-            // Update the player's turn text
+            //Update the player's turn text
             gameManager.UpdateCurrentPlayerText();
         }
     }

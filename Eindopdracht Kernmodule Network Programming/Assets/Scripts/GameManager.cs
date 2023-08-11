@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     public Button[] cellButtons;
 
-    public int playerNumber; // Store the player number for this client
+    public int playerNumber; //Store the player number for this client
 
     public GameState gameState = new GameState();
 
@@ -32,8 +32,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame(int firstPlayer)
     {
-        this.currentPlayer = firstPlayer;
-        gameState.SetCurrentPlayer(firstPlayer); // Update the current player in GameState
+        gameState.SetCurrentPlayer(firstPlayer); //Update the current player in GameState
         GameBoardThingy();
         isGameOver = false;
 
@@ -48,8 +47,10 @@ public class GameManager : MonoBehaviour
         // Call the GameState's MakeMove function with the received move index and player number
         gameState.MakeMove(cellIndex, playerNumber);
 
-        // Update the visual representation of the game board with the currentPlayer's marker
-        UpdateCellVisual(cellIndex, playerNumber);
+        // Send move information to all clients
+        string moveData = "MOVE:" + cellIndex;
+        server.BroadcastMessageToClients(moveData);
+        Debug.Log("Move data sent: " + moveData);
 
         // Check for a win condition or a draw
         if (gameState.CheckWinCondition(playerNumber))
@@ -66,12 +67,8 @@ public class GameManager : MonoBehaviour
             gameState.SwitchPlayer();
             server.BroadcastSwitchPlayer();
         }
-
-        // Send move information to all clients
-        string moveData = "MOVE:" + cellIndex;
-        server.BroadcastMessageToClients(moveData);
-        Debug.Log("Move data sent: " + moveData);
     }
+
 
     public void UpdateCellVisual(int index, int playerNumber)
     {
@@ -84,16 +81,16 @@ public class GameManager : MonoBehaviour
 
             if (buttonText != null)
             {
-                // Set the visual representation based on the player's marker
+                //Set the visual representation based on the player's marker
                 buttonText.text = (playerNumber == 1) ? "X" : "O";
 
-                // Get the existing color
+                //Get the existing color
                 Color existingColor = buttonText.color;
 
-                // Set the new color with the existing alpha value set to maximum (255)
+                //Set the new color with the appropriate player's color
                 buttonText.color = (playerNumber == 1)
-                    ? new Color(player1Color.r, player1Color.g, player1Color.b, 255f / 255f)
-                    : new Color(player2Color.r, player2Color.g, player2Color.b, 255f / 255f);
+                    ? new Color(player1Color.r, player1Color.g, player1Color.b, 1f) // Use player 1 color
+                    : new Color(player2Color.r, player2Color.g, player2Color.b, 1f); // Use player 2 color
             }
             else
             {
@@ -111,7 +108,7 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         gameResultText.text = "Player " + player + " wins!";
 
-        // Set text color based on the winning player with alpha value set to maximum (255)
+        //Set text color based on the winning player with alpha value set to maximum (255)
         gameResultText.color = (player == 1)
             ? new Color(player1Color.r, player1Color.g, player1Color.b, 255f / 255f)
             : new Color(player2Color.r, player2Color.g, player2Color.b, 255f / 255f);
@@ -129,7 +126,7 @@ public class GameManager : MonoBehaviour
     {
         currentPlayerText.text = "Current Player: " + currentPlayer;
 
-        // Set text color based on current player with alpha value set to maximum (255)
+        //Set text color based on current player with alpha value set to maximum (255)
         currentPlayerText.color = (currentPlayer == 1)
             ? new Color(player1Color.r, player1Color.g, player1Color.b, 255f / 255f)
             : new Color(player2Color.r, player2Color.g, player2Color.b, 255f / 255f);
@@ -149,7 +146,7 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                gameBoard[i, j] = 0; // Initialize with empty cells
+                gameBoard[i, j] = 0; //Initialize with empty cells
             }
         }
     }
