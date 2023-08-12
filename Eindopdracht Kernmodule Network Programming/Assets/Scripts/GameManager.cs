@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame(int firstPlayer)
     {
-        gameState.SetCurrentPlayer(firstPlayer); //Update the current player in GameState
+        gameState.SetFirstPlayer(firstPlayer); //Update the current player in GameState
         GameBoardThingy();
         isGameOver = false;
 

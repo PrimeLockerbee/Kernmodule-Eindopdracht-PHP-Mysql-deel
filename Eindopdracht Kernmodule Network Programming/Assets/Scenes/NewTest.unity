@@ -3134,10 +3134,10 @@ MonoBehaviour:
   - {fileID: 1331984046}
   playerNumber: 0
   gameState:
-    currentPlayer: 1
+    currentPlayer: 0
+    firstPlayer: 0
     isGameOver: 0
     server: {fileID: 1473076392}
-    gamemanager: {fileID: 1963628660}
 --- !u!4 &1963628661
 Transform:
   m_ObjectHideFlags: 0

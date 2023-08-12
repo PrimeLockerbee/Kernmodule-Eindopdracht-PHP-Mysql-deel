@@ -7,7 +7,8 @@ using System;
 public class GameState
 {
     public int[,] gameBoard;
-    public int currentPlayer;
+    public int currentPlayer = 0;
+    public int firstPlayer;
     public bool isGameOver;
 
     public Server server;
@@ -15,7 +16,7 @@ public class GameState
     public GameState()
     {
         gameBoard = new int[3, 3];
-        currentPlayer = 1;
+        currentPlayer = 0;
     }
 
     //Add methods to update game state and handle synchronization
@@ -28,9 +29,9 @@ public class GameState
         Debug.Log("Move works");
     }
 
-    public void SetCurrentPlayer(int playerNumber)
+    public void SetFirstPlayer(int playerNumber)
     {
-        currentPlayer = playerNumber;
+        firstPlayer = playerNumber;
     }
 
     public bool CheckWinCondition(int player)
