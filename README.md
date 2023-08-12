@@ -1,1 +1,0 @@
-# Kernmodule-Eindopdracht-PHP-Mysql-deel
