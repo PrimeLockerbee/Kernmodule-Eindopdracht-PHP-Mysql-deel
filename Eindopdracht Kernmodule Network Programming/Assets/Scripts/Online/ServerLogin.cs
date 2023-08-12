@@ -10,8 +10,6 @@ public class ServerLogin : MonoBehaviour
 
     public TextMeshProUGUI serverStatus;
 
-    public PlayerLogin playerlogin;
-
     public bool serverLoggedIn = false;
 
     private void Start()

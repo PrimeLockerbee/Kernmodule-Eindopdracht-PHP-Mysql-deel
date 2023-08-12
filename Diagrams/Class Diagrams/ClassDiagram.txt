@@ -1,0 +1,236 @@
+@startuml
+
+package PHP{
+
+class Register #abdbe3 {
+}
+
+class Score_submit #abdbe3 {
+
+}
+
+class Server_login #abdbe3 {
+
+}
+
+class Statistics #abdbe3 {
+
+}
+
+class User_login #abdbe3 {
+
+}
+
+}
+
+package Unity{
+
+class PlayerLogin #abdbe3 {
+
++string userLoginURL
+
++TMP_InputField emailInputField
++TMP_InputField passwordInputField
+
++ServerLogin serverLogin
+
++int numPlayers
+
++void Login()
+-IEnumerator PlayerLoginRequest(string email, string password)
+
+
+}
+
+class PlayerRegister #abdbe3 {
+
++string userRegisterURL
+
++TMP_InputField emailInputField
++TMP_InputField passwordInputField
++TMP_InputField nickNameInputField
+
++GameObject succesText
++GameObject failText
+
++void Register()
+-IEnumerator PlayerRegisterRequest(string email, string password, string nickname)
+
+}
+
+class ScoreSubmission #abdbe3 {
+
++string scoreSubmitURL
+
++void SubmitScore(int score)
+-IEnumerator SendScore(string playerId, int score)
+
+}
+
+class ServerLogin #abdbe3 {
+
++string serverLoginURL
++TextMeshProUGUI serverStatus
+
++void Login()
+-IEnumerator ServerLoginRequest(string serverID, string password)
+
+}
+
+class Server #abdbe3 {
+
+-const int Port
+-const int MaxClients
+
+-TcpListener serverSocket
+-TcpClient[] clients
+-NetworkStream[] clientStream 
+-byte[] reveiveBuffer
+-bool isGameActive
+
++GameManager startGame
+
+-int connectedClients
+-int nextPlayerNumber
+HashSet<int> assignedPlayerNumbers
+
++void StartGameServer()
++void InitializeServer()
+-ClientConnected(IAsyncResult ar)
+-ReceiveMessage(IAsyncResult ar)
+-SendMessageToClient(int clientIndex, string message)
++BroadcastMessageToClients(string message)
++BroadcastSwitchPlayer()
++BroadcastWin()
++BroadcastDraw()
++BroadcastUpdateVisual()
+}
+
+class Client #abdbe3 {
+
++const string serverAddress
++const int serverPort
+
+-TcpClient client
+-NetworkStream networkStream
+
+-byte[] receiveBuffer
+-string receivedData
+
++GameManager gameManager
+
+-UnityMainThreadDispatcher unityMainThreadDispatcher
+
++Server server
+
+-int playerNumber
+
+-GameState gameState
+
++void ConnectToServer()
++ConnectCallback(IAsyncResult ar)
++ReceiveCallback(IAsyncResult ar)
++void ProcessData(string data)
++SendMove(int cellIndex)
++SendDataToServer(string message)
++SendData(string data)
+-OnDestroy()
+
+}
+
+class CellController #fbd4a8 {
+
++int index
+
++ GameManager gameManager
+
++void HandleClick()
+
+}
+
+class GameManager #fbd4a8 {
+
++TextMeshProUGUI currentPlayerText
++TextMeshProUGUI gameResultText
++TextMeshProUGUI playerNumberText
+
++Color player1Color
++Color player2Color
+
++int currentPlayer
+-int[,] gameBoard
+-bool isGameOver
+
++Server server
+
++int playerNumber
+
++GameState gameState
+
++void SetServer(Server server)
++void StartGame(int firstPlayer)
++void UpdateCellVisual(int index, int playerNumber)
++void HandleWin(int player)
++void HandleDraw()
++void UpdateCurrentPlayerText
++void SetPlayerNumber(int number)
+-void GameBoardThingy()
+
+}
+
+class GameState #fbd4a8 {
+
++int[,] gameBoard
++int currentPlayer
++int firstPlayer
++bool isGameOver
+
++GameState()
++void MakeMove(int cellIndex, int playerNumber)
++void SetFirstPlayer(int playerNumber)
++bool CheckWinCondition(int player)
++bool CheckDraw()
++void SwitchPlayer()
++bool IsCellEmpty
+
+}
+
+class UnityMainThreadDispatcher #fbd4a8 {
+
+- static UnityMainThreadDispatcher instance
+- static readonly Queue<Action> actionQueue
+
++static UnityMainThreadDispatcher Instance()
++ void Enqueue(Action action)
+}
+
+}
+
+Database *-- Register
+Database *-- Score_submit
+Database *-- Server_login
+Database *-- Statistics
+Database *-- User_login
+
+Register *-- PlayerRegister
+Score_submit *-- ScoreSubmission
+Server_login *-- ServerLogin
+User_login *-- PlayerLogin
+
+Server *-- GameManager
+
+GameManager *-- Server
+GameManager *-- Client
+GameManager *-- CellController
+
+User_login *-- PlayerLogin
+
+Server *-- Client
+
+Client *-- Server
+Client *-- UnityMainThreadDispatcher
+
+GameState *-- GameManager
+GameState *-- Client
+
+@enduml

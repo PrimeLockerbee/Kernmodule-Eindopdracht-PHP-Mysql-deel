@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
 
     public Server server;
 
-    public Button[] cellButtons;
-
     public int playerNumber; //Store the player number for this client
 
     public GameState gameState = new GameState();
@@ -68,7 +66,6 @@ public class GameManager : MonoBehaviour
             server.BroadcastSwitchPlayer();
         }
     }
-
 
     public void UpdateCellVisual(int index, int playerNumber)
     {

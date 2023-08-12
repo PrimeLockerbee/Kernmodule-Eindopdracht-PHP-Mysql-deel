@@ -11,15 +11,12 @@ public class GameState
     public int firstPlayer;
     public bool isGameOver;
 
-    public Server server;
-
     public GameState()
     {
         gameBoard = new int[3, 3];
         currentPlayer = 0;
     }
 
-    //Add methods to update game state and handle synchronization
     public void MakeMove(int cellIndex, int playerNumber)
     {
         int row = cellIndex / 3;

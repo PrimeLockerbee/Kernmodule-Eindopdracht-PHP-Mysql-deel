@@ -8,15 +8,13 @@ using UnityEngine.SceneManagement;
 public class PlayerRegister : MonoBehaviour
 {
     public string userRegisterURL = "https://studenthome.hku.nl/~bradley.vanewijk/register.php";
+
     public TMP_InputField emailInputField;
     public TMP_InputField passwordInputField;
     public TMP_InputField nickNameInputField;
 
     public GameObject succesText;
     public GameObject failText;
-
-    public ServerLogin serverlogin;
-    public PlayerLogin playerlogin;
 
     public void Register()
     {
