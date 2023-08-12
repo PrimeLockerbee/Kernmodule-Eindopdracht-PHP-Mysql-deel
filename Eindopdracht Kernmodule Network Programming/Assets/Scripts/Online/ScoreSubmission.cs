@@ -8,28 +8,24 @@ public class ScoreSubmission : MonoBehaviour
 {
     public string scoreSubmitURL = "https://studenthome.hku.nl/~bradley.vanewijk/score_submit.php";
 
-    public ServerLogin serverLogin;
-
-    public void SubmitScore(string playername, int playerscore)
+    public void SubmitScore(int score)
     {
-        if (serverLogin.serverLoggedIn)
+        string playerId = PlayerPrefs.GetString("ID"); // Retrieve the player's ID
+        if (!string.IsNullOrEmpty(playerId))
         {
-            string playerName = playername;
-            int score = playerscore;
-
-            StartCoroutine(SendScore(playerName, score));
+            StartCoroutine(SendScore(playerId, score));
         }
         else
         {
-            Debug.Log("Server not logged in");
+            Debug.Log("Player ID not found");
         }
     }
 
-    private IEnumerator SendScore(string playerName, int score)
+    private IEnumerator SendScore(string playerId, int score)
     {
         // Create a form to hold the score data
         WWWForm form = new WWWForm();
-        form.AddField("playerName", playerName);
+        form.AddField("user_id", playerId);
         form.AddField("score", score);
 
         // Send the POST request to the score submission script
@@ -44,29 +40,9 @@ public class ScoreSubmission : MonoBehaviour
             }
             else
             {
+                // Handle the response from the server as before
                 Debug.Log(www.downloadHandler.text);
-
-                // Check the response from the server
-                if (www.downloadHandler.text.Contains("Score updated successfully"))
-                {
-                    Debug.Log("Score submitted successfully");
-                    // Perform any actions required upon successful score submission
-                }
-                else if (www.downloadHandler.text.Contains("Score inserted successfully"))
-                {
-                    Debug.Log("Score inserted successfully");
-                    // Perform any actions required upon successful score insertion
-                }
-                else if (www.downloadHandler.text.Contains("Player does not exist"))
-                {
-                    Debug.Log("Player does not exist");
-                    // Perform any actions for a non-existing player
-                }
-                else
-                {
-                    Debug.Log("Score submission failed");
-                    // Perform any actions required upon failed score submission
-                }
+                // ... (rest of your code)
             }
         }
     }

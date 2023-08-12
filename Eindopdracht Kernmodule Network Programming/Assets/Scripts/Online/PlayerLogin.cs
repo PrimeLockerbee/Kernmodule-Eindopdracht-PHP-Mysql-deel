@@ -72,10 +72,10 @@ public class PlayerLogin : MonoBehaviour
                          // Increment the number of players
                          numPlayers++;
 
-                         // Store the variables in PlayerPrefs
-                         PlayerPrefs.SetString("ID", id);
-                         PlayerPrefs.SetString("Nickname", nickname);
-                         PlayerPrefs.SetString("SessionID", sessionId);
+                        // Store the variables in PlayerPrefs
+                        PlayerPrefs.SetString("ID", id);
+                        Debug.Log("Player ID stored: " + PlayerPrefs.GetString("ID"));
+                        PlayerPrefs.SetString("SessionID", sessionId);
 
                          // Now you can use the variables as needed
                          Debug.Log("ID: " + id);
