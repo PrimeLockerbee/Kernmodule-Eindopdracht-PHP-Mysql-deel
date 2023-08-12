@@ -161,7 +161,7 @@ public class Server : MonoBehaviour
 
     public void BroadcastUpdateVisual()
     {
-        BroadcastMessageToClients("UPDATEVISUAL");
+        BroadcastMessageToClients("UPDATE_VISUAL");
     }
 
     private void Update()

@@ -142,6 +142,8 @@ public class Client : MonoBehaviour
                 // Update the GameManager on both clients
                 UnityMainThreadDispatcher.Instance().Enqueue(() =>
                 {
+                    gameManager.currentPlayer = firstPlayer;
+
                     gameManager.StartGame(firstPlayer);
                 });
             }
